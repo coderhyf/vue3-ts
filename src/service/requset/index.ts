@@ -70,7 +70,9 @@ class hyRequest {
       if (config.showLoading === false) {
         this.showLoading = config.showLoading;
       }
-      this.instance.request<any, T>(config).then((res) => {
+      this.instance
+        .request<any, T>(config)
+        .then((res) => {
           if (config.interceptors?.responseInterceptor) {
             res = config.interceptors.responseInterceptor(res);
           }

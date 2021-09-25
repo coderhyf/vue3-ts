@@ -11,6 +11,6 @@ import "./assets/css/index.less";
 const app = createApp(App);
 app.use(store);
 app.use(ElementPlus);
-setupStore() // 防止vuex刷新，丢失数据
+setupStore(); // 防止vuex刷新，丢失数据
 app.use(router);
 app.mount("#app");

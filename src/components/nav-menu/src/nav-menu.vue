@@ -2,12 +2,16 @@
   <div class="nav-menu">
     <div class="logo">
       <img src="~@/assets/img/logo.svg" class="img" />
-      <div class="title">coderhyf</div>
+      <div v-if="!isCollapse" class="title">coderhyf</div>
     </div>
-    <el-menu default-active="2" class="el-menu-vertical"
-             background-color="#0c2135"
-             text-color="#b7bdc3"
-             active-text-color="#0a60bd">
+    <el-menu
+      default-active="2"
+      class="el-menu-vertical"
+      background-color="#0c2135"
+      text-color="#b7bdc3"
+      active-text-color="#0a60bd"
+      :collapse="isCollapse"
+    >
       <template v-for="item in useMenus" :key="item.id">
         <!--  二级菜单 -->
         <template v-if="item.type === 1">
@@ -42,17 +46,27 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { computed } from "vue";
+import { useRouter } from "vue-router";
 
 import { userStore } from "@/store";
 
 export default {
   name: "nav-menu",
-  setup () {
-    const store = userStore ();
-    const useMenus = computed (() => store.state.login.userMenus);
-    const handleMenuItemClick = (item) => {
+  props: {
+    isCollapse: {
+      type: Boolean,
+      default: false
+    }
+  },
+  setup() {
+    const store = userStore();
+    const useMenus = computed(() => store.state.login.userMenus);
+
+    const router = useRouter();
+    const handleMenuItemClick = (item: any) => {
+      router.push({ path: item.url ?? "/not-found" });
     };
     return {
       useMenus,

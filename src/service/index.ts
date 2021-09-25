@@ -18,13 +18,13 @@ export default new hyRequest({
       return config;
     },
     requestInterceptorCatch: (err) => {
-      return err
+      return err;
     },
     responseInterceptor: (res) => {
-      return res
+      return res;
     },
     responseInterceptorCatch: (err) => {
-      return err
+      return err;
     }
   }
 });

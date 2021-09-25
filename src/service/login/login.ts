@@ -5,7 +5,7 @@ import { ILoginResult } from "./types";
 enum LoginAPI {
   AccountLogin = "/login",
   LoginUserInfo = "/users/",
-  userMenus = '/role/' // role + 'id' 动态的
+  userMenus = "/role/" // role + 'id' 动态的
 }
 
 // 登录axios
@@ -13,7 +13,7 @@ export function accountLoginRequest(account: IAccount) {
   return hyRequest.post<IDataType<ILoginResult>>({
     url: LoginAPI.AccountLogin,
     data: account,
-    showLoading:false
+    showLoading: false
   });
 }
 
@@ -25,9 +25,9 @@ export function resUserInfoById(id: number) {
   });
 }
 // 用户菜单，左侧
-export  function resUserMenus(id: number){
+export function resUserMenus(id: number) {
   return hyRequest.get<IDataType>({
-    url: LoginAPI.userMenus + id + '/menu',
+    url: LoginAPI.userMenus + id + "/menu",
     showLoading: false
-  })
+  });
 }

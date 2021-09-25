@@ -1,6 +1,6 @@
 module.exports = {
   lintOnSave: false,
-  publicPath: "./",
+  // publicPath: "./",
   devServer: {
     proxy: {
       [`^${process.env.VUE_APP_TITLE_API}`]: {

@@ -1,10 +1,12 @@
 import { Module } from "vuex";
+import router from "@/router";
 import { ILoginState } from "./types";
 import { IRootState } from "../types";
 import { IAccount } from "@/service/login/types";
 import LocalCache from "@/utils/csche";
+import { mapMenusToRoutes } from "@/utils/map-menus";
+// api
 import { accountLoginRequest, resUserInfoById, resUserMenus } from "@/service/login/login";
-import router from "@/router";
 
 const loginModule: Module<ILoginState, IRootState> = {
   namespaced: true,
@@ -27,6 +29,10 @@ const loginModule: Module<ILoginState, IRootState> = {
     // 用户菜单
     changUserMenus(state, userMenus: any) {
       state.userMenus = userMenus;
+      const routes = mapMenusToRoutes(userMenus);
+      routes.forEach((path) => {
+        router.addRoute("main", path);
+      });
     }
   },
   actions: {
@@ -46,18 +52,18 @@ const loginModule: Module<ILoginState, IRootState> = {
       await router.push("/main");
     },
     // 防止vuex刷新丢失数据
-    loadLocalLogin({commit}) {
-      const token = LocalCache.getCache('token');
-      if (token){
-        commit('changToken', token);
+    loadLocalLogin({ commit }) {
+      const token = LocalCache.getCache("token");
+      if (token) {
+        commit("changToken", token);
       }
-      const userInfo = LocalCache.getCache('userInfo');
-      if (userInfo){
-        commit('changUserInfo', userInfo);
+      const userInfo = LocalCache.getCache("userInfo");
+      if (userInfo) {
+        commit("changUserInfo", userInfo);
       }
-      const userMenus = LocalCache.getCache('userMenus');
-      if (userMenus){
-        commit('changUserMenus', userMenus);
+      const userMenus = LocalCache.getCache("userMenus");
+      if (userMenus) {
+        commit("changUserMenus", userMenus);
       }
     }
   }

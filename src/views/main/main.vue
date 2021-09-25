@@ -3,15 +3,16 @@
     <el-container class="main-content">
       <el-aside :width="isCollapse ? '60px' : '210px'">
         <!--    左侧导航    -->
-        <nav-menu />
+        <nav-menu :isCollapse="isCollapse" />
       </el-aside>
       <el-container class="page">
         <el-header class="page-header">
-          <!--          <nav-header @foldChange="handleFoldChange" />-->
+          <!--       头部   -->
+          <nav-header @foldChange="foldChange" />
         </el-header>
         <el-main class="page-content">
           <div class="page-info">
-            <!--            <router-view></router-view>-->
+            <router-view />
           </div>
         </el-main>
       </el-container>
@@ -19,18 +20,22 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { ref } from "vue";
 
-import NavMenu from "../../components/nav-menu/src/nav-menu";
+import NavMenu from "@/components/nav-menu";
+import NavHeader from "@/components/nav-header";
 
 export default {
-  name: "main",
-  components: { NavMenu },
-  setup () {
-    const isCollapse = ref (false);
+  components: { NavMenu, NavHeader },
+  setup() {
+    const isCollapse = ref(false);
+    const foldChange = (isFold: boolean) => {
+      isCollapse.value = isFold;
+    };
     return {
-      isCollapse
+      isCollapse,
+      foldChange
     };
   }
 };
