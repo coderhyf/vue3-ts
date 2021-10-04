@@ -5,13 +5,12 @@
       <div v-if="!isCollapse" class="title">coderhyf</div>
     </div>
     <el-menu
-      default-active="2"
+      :default-active="defaultValue"
       class="el-menu-vertical"
       background-color="#0c2135"
       text-color="#b7bdc3"
       active-text-color="#0a60bd"
-      :collapse="isCollapse"
-    >
+      :collapse="isCollapse">
       <template v-for="item in useMenus" :key="item.id">
         <!--  二级菜单 -->
         <template v-if="item.type === 1">
@@ -47,10 +46,11 @@
 </template>
 
 <script lang="ts">
-import { computed } from "vue";
-import { useRouter } from "vue-router";
+import { computed, ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
 
 import { userStore } from "@/store";
+import { pathMapToMenu } from "@/utils/map-menus";
 
 export default {
   name: "nav-menu",
@@ -65,11 +65,16 @@ export default {
     const useMenus = computed(() => store.state.login.userMenus);
 
     const router = useRouter();
+    const route = useRoute();
+    const currentPath = route.path;
+    const menu = pathMapToMenu(useMenus.value, currentPath);
+    const defaultValue = ref(menu.id + "");
     const handleMenuItemClick = (item: any) => {
       router.push({ path: item.url ?? "/not-found" });
     };
     return {
       useMenus,
+      defaultValue,
       handleMenuItemClick
     };
   }

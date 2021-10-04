@@ -1,10 +1,14 @@
 import { RouteRecordRaw } from "vue-router";
+import { IBreadcrumb } from "@/components/breadcrumb";
+
+let fistMenu: any = null;
+
 export function mapMenusToRoutes(userMenus: any[]): RouteRecordRaw[] {
   const routes: RouteRecordRaw[] = [];
   // 1 先去加载所有的默认route
   const allRoutes: RouteRecordRaw[] = [];
   // 获取router文件中main里面所有的文件， true代表递归查找， /\.ts/代表查找的类型
-  const routeFiles = require.context('../router/main', true, /\.ts/)
+  const routeFiles = require.context("../router/main", true, /\.ts/);
   // 返回值是数组
   routeFiles.keys().forEach((key) => {
     const route = require("../router/main" + key.split(".")[1]);
@@ -16,6 +20,9 @@ export function mapMenusToRoutes(userMenus: any[]): RouteRecordRaw[] {
       if (menu.type === 2) {
         const route = allRoutes.find((route) => route.path === menu.url);
         if (route) routes.push(route);
+        if (!fistMenu) {
+          fistMenu = menu;
+        }
       } else {
         _recurseGetRoute(menu.children);
       }
@@ -24,3 +31,28 @@ export function mapMenusToRoutes(userMenus: any[]): RouteRecordRaw[] {
   _recurseGetRoute(userMenus);
   return routes;
 }
+
+// 面包屑
+export function mapToBreadcrumb(userMenus: any[], currentPath: string) {
+  const breadcrumb: IBreadcrumb[] = [];
+  pathMapToMenu(userMenus, currentPath, breadcrumb);
+  return breadcrumb;
+}
+
+// 匹配刷新左侧菜单
+export function pathMapToMenu(userMenus: any[], currentPath: string, breadcrumb?: IBreadcrumb[]): any {
+  for (const userMenu of userMenus) {
+    if (userMenu.type === 1) {
+      const findMenu = pathMapToMenu(userMenu.children ?? [], currentPath);
+      if (findMenu) {
+        breadcrumb?.push({ name: userMenu.name, path: userMenu.url });
+        breadcrumb?.push({ name: findMenu.name, path: findMenu.url });
+        return findMenu;
+      }
+    } else if (userMenu.type === 2 && userMenu.url === currentPath) {
+      return userMenu;
+    }
+  }
+}
+
+export { fistMenu };

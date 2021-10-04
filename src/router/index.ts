@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import type { RouteRecordRaw } from "vue-router";
 
 import LocalCache from "@/utils/csche";
+import { fistMenu } from "@/utils/map-menus";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -17,14 +18,14 @@ const routes: Array<RouteRecordRaw> = [
     path: "/main",
     name: "main",
     component: () => import("@/views/main/main.vue"),
-    children:[
+    children: [
       {
         path: "/:pathMatch(.*)*",
         name: "notFound",
         component: () => import("@/views/not-found/not-found.vue")
       }
     ]
-  },
+  }
 
 ];
 
@@ -39,6 +40,9 @@ router.beforeEach((to) => {
     if (!token) {
       return "/login";
     }
+  }
+  if (to.path === "/main") {
+    return fistMenu.url;
   }
 });
 export default router;
