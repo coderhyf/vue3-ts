@@ -1,6 +1,7 @@
 type IFromType = "password" | "select" | "input" | "datepicker"
 
 export interface IFromItems {
+  field: string,
   type: IFromType,
   label: string,
   rules?: any[],
@@ -8,6 +9,7 @@ export interface IFromItems {
   options?: any[],
   otherOptions?: any
 }
+
 export interface IFrom {
   fromItems: IFromItems [],
   labelWidth?: string,

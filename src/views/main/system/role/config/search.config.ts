@@ -3,13 +3,18 @@ import { IFrom } from "@/components/base-ui/from";
 export const searchFromConfig: IFrom = {
   fromItems: [
     {
-      field: "name",
+      field: "id",
       placeholder: "请输入用户名",
       type: "input",
       label: "用户名"
     },
     {
-      field: "createAt",
+      field: "intro",
+      label: "权限介绍",
+      type: "input"
+    },
+    {
+      field: "createTime",
       label: "创建时间",
       type: "datepicker",
       otherOptions: {
@@ -17,17 +22,8 @@ export const searchFromConfig: IFrom = {
         endPlaceholder: "结束时间",
         type: "daterange"
       }
-    },
-    {
-      field: "enable",
-      label: "用户状态",
-      type: "select",
-      placeholder: "请选择",
-      options: [
-        { title: "启用", value: 1 },
-        { title: "禁用", value: 0 }
-      ]
     }
+
   ]
 
 };

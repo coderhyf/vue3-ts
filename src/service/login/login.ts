@@ -1,5 +1,6 @@
 import hyRequest from "../index";
-import { IAccount, IDataType } from "./types";
+import { IAccount } from "./types";
+import { IDataType } from "@/service/types";
 import { ILoginResult } from "./types";
 
 enum LoginAPI {
@@ -24,6 +25,7 @@ export function resUserInfoById(id: number) {
     showLoading: false
   });
 }
+
 // 用户菜单，左侧
 export function resUserMenus(id: number) {
   return hyRequest.get<IDataType>({

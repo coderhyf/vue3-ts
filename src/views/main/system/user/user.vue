@@ -1,28 +1,50 @@
 <template>
   <div class="user">
-    <HyfFrom v-bind="searchFromConfig" />
+    <!--  查询区  -->
+    <PageSearch :searchFromConfig="searchFromConfig"
+                @resetBtnClick="resetBtnClick"
+                @queryBtnClick="queryBtnClick" />
+    <!--  表单  -->
+    <PageContent :contentConfig="contentConfig"
+                 pageName="users" ref="pageContentRef" />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
+
 // 表单配置项
 import { searchFromConfig } from "./config/search.config";
+import { contentConfig } from "./config/content.config";
 
-import HyfFrom from "@/components/base-ui";
+import PageSearch from "@/components/page-search";
+import PageContent from "@/components/page-content";
+
+import { userPageSearch } from "@/hooks/user-page-search";
 
 export default defineComponent({
-  name: "user",
-  components: {
-    HyfFrom
-  },
+  name: "users",
+  components: { PageContent, PageSearch },
   setup() {
-
+    // const [pageContentRef, resetBtnClick, queryBtnClick] = userPageSearch();
+    var pageContentRef: any = ref<InstanceType<typeof pageContentRef>>();
+    const resetBtnClick = () => {
+      pageContentRef.value?.getPageData();
+    };
+    const queryBtnClick = (queryInfo: any) => {
+      pageContentRef.value?.getPageData(queryInfo);
+    };
     return {
-      searchFromConfig
+      contentConfig,
+      searchFromConfig,
+      pageContentRef,
+      resetBtnClick,
+      queryBtnClick
     };
   }
 });
 </script>
 
-<style scoped></style>
+<style scoped lang="less">
+
+</style>
