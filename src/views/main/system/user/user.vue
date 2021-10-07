@@ -5,8 +5,11 @@
                 @resetBtnClick="resetBtnClick"
                 @queryBtnClick="queryBtnClick" />
     <!--  表单  -->
-    <PageContent :contentConfig="contentConfig"
-                 pageName="users" ref="pageContentRef" />
+    <PageContent :contentConfig="contentConfig" pageName="users" ref="pageContentRef">
+      <template #enable="{row}">
+        <el-tag>{{ row.enable ? "启用" : "禁用" }}</el-tag>
+      </template>
+    </PageContent>
   </div>
 </template>
 
