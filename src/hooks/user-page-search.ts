@@ -2,7 +2,8 @@ import { ref } from "vue";
 import PageContent from "@/components/page-content";
 
 export function userPageSearch() {
-  const pageContentRef:any = ref<InstanceType<typeof PageContent>>();
+  // @ts-ignore
+  const pageContentRef: any = ref<InstanceType<typeof PageContent>>();
   const resetBtnClick = () => {
     pageContentRef.value?.getPageData();
   };

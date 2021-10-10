@@ -2,7 +2,7 @@
   <div>
     <HyfTable v-bind="contentConfig" :list-data="userList" :data-count="userCount" v-model:page="pageInfo">
       <template #headerHandler>
-        <el-button size="mini" type="primary">新建</el-button>
+        <el-button size="mini" type="primary" v-if="isCreate" @click="handleNewClick">新建</el-button>
       </template>
       <template #createAt="{row}">
         {{ $filters.formatTime (row.createAt) }}
@@ -10,9 +10,13 @@
       <template #updateAt="{row}">
         {{ $filters.formatTime (row.updateAt) }}
       </template>
-      <template #handle>
-        <el-button size="mini" type="primary">修改</el-button>
-        <el-button size="mini" type="danger">删除</el-button>
+      <template #handle="{row}">
+        <el-button size="mini" type="primary" v-if="isUpdate"
+                   @click="handleEditClick(row)">编辑
+        </el-button>
+        <el-button size="mini" type="danger" v-if="isDelete"
+                   @click="handleDelete(row)">删除
+        </el-button>
       </template>
       <!--   动态插槽   -->
       <template v-for="item in otherPropsSlots" :key="item.prop" #[item.slotName]="scope">
@@ -26,13 +30,12 @@
 
 <script lang="ts">
 import { computed, ref, watch } from "vue";
-import { userStore } from "@/store";
 
-import HyfTable from "@/components/base-ui/table";
+import { userStore } from "@/store";
+import { userPermissions } from "@/hooks/use-permissions";
 
 export default {
   name: "page-content",
-  components: { HyfTable },
   props: {
     contentConfig: {
       type: Object,
@@ -43,12 +46,21 @@ export default {
       required: true
     }
   },
-  setup(props: any) {
+  emits: ["newBtnClick", "editBtnClick"],
+  setup(props: any, { emit }: any) {
     const store = userStore();
+
+    // 0.获取操作的权限
+    const isCreate = userPermissions(props.pageName, "create");
+    const isUpdate = userPermissions(props.pageName, "update");
+    const isDelete = userPermissions(props.pageName, "delete");
+    const isQuery = userPermissions(props.pageName, "query");
+
     // 1.双向绑定pageInfo
     const pageInfo = ref({ currentPage: 1, pageSize: 10 });
     watch(pageInfo, () => getPageData());
     const getPageData = (queryInfo: any = {}) => {
+      if (!isQuery) return;
       store.dispatch("system/getPageListAction", {
         pageName: props.pageName,
         queryInfo: {
@@ -67,15 +79,35 @@ export default {
       if (item.slotName === "createAt") return false;
       if (item.slotName === "updateAt") return false;
       if (item.slotName === "handle") return false;
-      // if (item.slotName === "status") return false;
       return true;
     });
+    // 删除
+    const handleDelete = (item: any) => {
+      store.dispatch("system/deletePageAction", {
+        pageName: props.pageName,
+        id: item.id
+      });
+    };
+    // 新建
+    const handleNewClick = () => {
+      emit("newBtnClick");
+    };
+    // 编辑
+    const handleEditClick = (item: any) => {
+      emit("editBtnClick", item);
+    };
     return {
       getPageData,
+      handleDelete,
+      handleNewClick,
+      handleEditClick,
       otherPropsSlots,
       userList,
       userCount,
-      pageInfo
+      pageInfo,
+      isDelete,
+      isUpdate,
+      isCreate
     };
   }
 };

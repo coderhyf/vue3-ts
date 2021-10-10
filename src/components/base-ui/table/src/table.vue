@@ -8,7 +8,8 @@
         </div>
       </slot>
     </div>
-    <el-table :data="listData" style="width: 100%" border>
+    <el-table :data="listData" style="width: 100%" border row-key="id"
+              v-bind="childrenProps">
       <el-table-column v-if="showIndex" type="selection" align="center" width="60" />
       <el-table-column v-if="showIndex" type="index" label="序号" align="center" width="80"
                        :index="tableIndex" />
@@ -22,7 +23,7 @@
         </el-table-column>
       </template>
     </el-table>
-    <div class="footer" v-if="showFooter">
+    <div class="footer" v-if="showFooter && listData.length !== 0">
       <slot name="footer">
         <el-pagination
           @size-change="handleSizeChange"
@@ -58,6 +59,10 @@ export default {
       type: Object,
       default: () => ({ currentPage: 0, pageSize: 10 })
     },
+    childrenProps: {
+      type: Object,
+      default: () => ({})
+    },
     propList: {
       type: Array,
       required: true
@@ -80,7 +85,7 @@ export default {
       emit("update:page", { ...props.page, currentPage });
     };
     const tableIndex = (index: number) => {
-       return (props.page.currentPage - 1) * props.page.pageSize + index + 1;
+      return (props.page.currentPage - 1) * props.page.pageSize + index + 1;
     };
 
     return {

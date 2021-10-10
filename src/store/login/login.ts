@@ -4,7 +4,7 @@ import { ILoginState } from "./types";
 import { IRootState } from "../types";
 import { IAccount } from "@/service/login/types";
 import LocalCache from "@/utils/csche";
-import { mapMenusToRoutes } from "@/utils/map-menus";
+import { mapMenusToPermissions, mapMenusToRoutes } from "@/utils/map-menus";
 // api
 import { accountLoginRequest, resUserInfoById, resUserMenus } from "@/service/login/login";
 
@@ -14,7 +14,8 @@ const loginModule: Module<ILoginState, IRootState> = {
     return {
       token: "",
       userInfo: "",
-      userMenus: []
+      userMenus: [],
+      permission: []
     };
   },
   mutations: {
@@ -33,6 +34,8 @@ const loginModule: Module<ILoginState, IRootState> = {
       routes.forEach((path) => {
         router.addRoute("main", path);
       });
+      const permissions = mapMenusToPermissions(userMenus);
+      state.permission = permissions;
     }
   },
   actions: {

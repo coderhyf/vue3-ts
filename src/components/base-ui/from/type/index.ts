@@ -7,7 +7,8 @@ export interface IFromItems {
   rules?: any[],
   placeholder?: any,
   options?: any[],
-  otherOptions?: any
+  otherOptions?: any,
+  isHidden?: boolean
 }
 
 export interface IFrom {

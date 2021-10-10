@@ -4,7 +4,8 @@
       <el-row>
         <template v-for="item in fromItems" :key="item.label">
           <el-col v-bind="colLayout">
-            <el-form-item :label="item.label" :itemStyle="itemStyle" :rules="item.rules">
+            <el-form-item :label="item.label" :itemStyle="itemStyle" :rules="item.rules"
+                          v-if="!item.isHidden">
               <!--     input    -->
               <template v-if="item.type === 'input' || item.type === 'password'">
                 <el-input :placeholder="item.placeholder" :show-password="item.type === 'password'"

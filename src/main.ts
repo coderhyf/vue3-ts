@@ -7,8 +7,10 @@ import ElementPlus from "element-plus";
 import "element-plus/lib/theme-chalk/index.css";
 import "normalize.css";
 import "./assets/css/index.less";
+import HyfTable from "@/components/base-ui/table";
 
 const app = createApp(App);
+app.component("HyfTable", HyfTable);
 app.use(globalRegister);
 app.use(store);
 app.use(ElementPlus);

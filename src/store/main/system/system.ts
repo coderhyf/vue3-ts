@@ -1,7 +1,7 @@
 import { Module } from "vuex";
 import { ISystemState } from "./types";
 import { IRootState } from "@/store/types";
-import { getPageListData } from "@/service/main/system/system";
+import { deletePageDataById, getPageListData } from "@/service/main/system/system";
 
 const systemModule: Module<ISystemState, IRootState> = {
   namespaced: true,
@@ -13,6 +13,8 @@ const systemModule: Module<ISystemState, IRootState> = {
       roleCount: 0,
       goodsList: [],
       goodsCount: 0,
+      menuList: [],
+      menuCount: 0
     };
   },
   mutations: {
@@ -34,6 +36,12 @@ const systemModule: Module<ISystemState, IRootState> = {
     changGoodsCount(state, count: number) {
       state.goodsCount = count;
     },
+    changeMenuList(state, list: any[]) {
+      state.menuList = list;
+    },
+    changMenuCount(state, count: number) {
+      state.menuCount = count;
+    }
   },
   getters: {
     pageListData(state) {
@@ -74,6 +82,14 @@ const systemModule: Module<ISystemState, IRootState> = {
       //     commit(`changRoleCount`, pageResult.data.totalCount);
       //     break;
       // }
+    },
+    async deletePageAction({ dispatch }, payload) {
+      const pageUrl = `/${payload.pageName}/${payload.id}`;
+      await deletePageDataById(pageUrl);
+      dispatch("getPageListAction", {
+        pageName: payload.pageName,
+        queryInfo: { offset: 0, size: 10 }
+      });
     }
   }
 };

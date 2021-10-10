@@ -55,4 +55,21 @@ export function pathMapToMenu(userMenus: any[], currentPath: string, breadcrumb?
   }
 }
 
+// 权限管理递归实现
+
+export function mapMenusToPermissions(userMenus: any[]) {
+  const permissions: string[] = [];
+  const _recurseGetPermission = (menus: any[]) => {
+    for (const menu of menus) {
+      if ([1, 2].includes(menu.type)) {
+        _recurseGetPermission(menu.children ?? []);
+      } else if (menu.type === 3) {
+        permissions.push(menu.permission);
+      }
+    }
+  };
+  _recurseGetPermission(userMenus);
+  return permissions;
+}
+
 export { fistMenu };
