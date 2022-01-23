@@ -1,6 +1,7 @@
 <template>
   <div style="padding: 0">
     <img src="~@/assets/img/101105E32_0.jpg" >
+    222
   </div>
 </template>
 
