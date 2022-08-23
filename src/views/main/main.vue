@@ -13,6 +13,7 @@
         <el-main class="page-content">
           <div class="page-info">
             <router-view />
+
           </div>
         </el-main>
       </el-container>

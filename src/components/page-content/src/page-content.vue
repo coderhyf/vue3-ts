@@ -25,6 +25,7 @@
         </template>
       </template>
     </HyfTable>
+    
   </div>
 </template>
 

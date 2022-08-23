@@ -1,12 +1,14 @@
 <template>
   <div class="goods">
-    <PageContent :contentConfig="contentConfig" pageName="goods">
-      <template #image="{row}">
-        <el-image :src="row.imgUrl" style="width: 50px; height: 50px"
+    <PageContent :contentConfig="contentConfig"
+                 pageName="goods">
+      <template #image="{ row }">
+        <el-image :src="row.imgUrl"
+                  style="width: 50px; height: 50px"
                   :preview-src-list="[row.imgUrl]" />
       </template>
-      <template #oldPrice="{row}">{{ " ¥ " + row.oldPrice }}</template>
-      <template #status="{row}">
+      <template #oldPrice="{ row }">{{ " ¥ " + row.oldPrice }}</template>
+      <template #status="{ row }">
         <el-tag>{{ row.status ? "哈哈" : "嘿嘿" }}</el-tag>
       </template>
     </PageContent>
